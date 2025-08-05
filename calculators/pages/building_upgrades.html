@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Building Upgrades</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .building { margin-bottom: 20px; }
+        .training-speed-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Building Upgrades</h1>
+        <p class="tagline">Calculate building upgrade cost and times</p>
+    </header>
+    <main>
+        <p>
+    Select buildings to manage their upgrade levels and input the building speed. 
+    If president, vice president and pet skills have not been activated 
+    you can manually activate them.
+    </p>
+
+    <div id="buildings">
+            <!-- Buildings will be rendered here -->
+    </div>
+    <div id="summary"></div>
+    </main>
+    
+    <script>
+const buildings = [
+    "Furnace",
+    "Embassy",
+    "Command center",
+    "Infirmary",
+    "Infantry camp",
+    "Lancer camp",
+    "Marksman camp"
+];
+
+// Track active/inactive state and levels for each building
+const buildingStates = Array(buildings.length).fill(false);
+const buildingLevels = Array(buildings.length).fill(null).map(() => ({ current: 1, target: 1 }));
+
+function renderBuildings() {
+    const container = document.getElementById('buildings');
+    container.innerHTML = '';
+    buildings.forEach((name, idx) => {
+        const isActive = buildingStates[idx];
+        const div = document.createElement('div');
+        div.className = 'building';
+        div.innerHTML = `
+            <input type="checkbox" id="activate-${idx}" style="width:24px;height:24px;" ${isActive ? 'checked' : ''} onchange="toggleBuilding(${idx})">
+            <label for="activate-${idx}" style="font-weight:bold; font-size:1.1em;">${name}</label>
+        `;
+        container.appendChild(div);
+    });
+    renderSummary();
+}
+
+function toggleBuilding(idx) {
+    buildingStates[idx] = !buildingStates[idx];
+    renderBuildings();
+}
+
+function getLevelOptions(selected, minIdx = 0) {
+    const levels = [];
+    // Numeric levels 1-30
+    for (let i = 1; i <= 30; i++) {
+        levels.push(`<option value="${i}"${selected == i ? ' selected' : ''}${levelToIndex(i) < minIdx ? ' disabled' : ''}>${i}</option>`);
+    }
+    // 30.1 to 30.4
+    for (let i = 1; i <= 4; i++) {
+        const val = `30.${i}`;
+        levels.push(`<option value="${val}"${selected == val ? ' selected' : ''}${levelToIndex(val) < minIdx ? ' disabled' : ''}>${val}</option>`);
+    }
+    // FC levels (FC1, FC1.1-FC1.4, ..., FC4, FC4.1-FC4.4, FC5 only)
+    for (let fc = 1; fc <= 5; fc++) {
+        const fcVal = `FC${fc}`;
+        levels.push(`<option value="${fcVal}"${selected == fcVal ? ' selected' : ''}${levelToIndex(fcVal) < minIdx ? ' disabled' : ''}>${fcVal}</option>`);
+        // Only add FCx.1-FCx.4 for FC1-FC4
+        if (fc < 5) {
+            for (let upg = 1; upg <= 4; upg++) {
+                const val = `FC${fc}.${upg}`;
+                levels.push(`<option value="${val}"${selected == val ? ' selected' : ''}${levelToIndex(val) < minIdx ? ' disabled' : ''}>${val}</option>`);
+            }
+        }
+        // Do NOT add FC5.1-FC5.4
+    }
+    return levels.join('');
+}
+
+function levelToIndex(val) {
+    if (/^FC\d+$/.test(val)) {
+        // FC1 = 35, FC2 = 40, etc.
+        return 34 + (parseInt(val.replace('FC', '')) - 1) * 5 + 1;
+    }
+    if (/^FC\d+\.\d+$/.test(val)) {
+        // FC1.1 = 36, FC1.2 = 37, etc.
+        const [fc, upg] = val.replace('FC', '').split('.');
+        return 34 + (parseInt(fc) - 1) * 5 + parseInt(upg) + 1;
+    }
+    if (/^30\.\d+$/.test(val)) {
+        // 30.1 = 31, 30.2 = 32, etc.
+        return 30 + parseInt(val.split('.')[1]);
+    }
+    return parseInt(val); // 1-30
+}
+
+function renderSummary() {
+    let summary = document.getElementById('summary');
+    if (!summary) {
+        summary = document.createElement('div');
+        summary.id = 'summary';
+        document.body.appendChild(summary);
+    }
+    const activeBuildings = buildings
+        .map((name, idx) => ({ name, idx }))
+        .filter(b => buildingStates[b.idx]);
+    if (activeBuildings.length === 0) {
+        summary.innerHTML = '';
+        return;
+    }
+    summary.innerHTML = `
+        <h2>Selected Buildings</h2>
+        <table border="1" cellpadding="8" style="border-collapse:collapse;">
+            <tr>
+                <th>Building</th>
+                <th>Current Level</th>
+                <th>Target Level</th>
+            </tr>
+            ${activeBuildings.map(b => {
+                const cur = buildingLevels[b.idx].current;
+                const tar = buildingLevels[b.idx].target;
+                return `
+                <tr>
+                    <td>${b.name}</td>
+                    <td>
+                        <select onchange="setCurrentLevel(${b.idx}, this.value)">
+                            ${getLevelOptions(cur)}
+                        </select>
+                    </td>
+                    <td>
+                        <select onchange="setTargetLevel(${b.idx}, this.value)">
+                            ${getLevelOptions(tar, levelToIndex(cur))}
+                        </select>
+                    </td>
+                </tr>
+                `;
+            }).join('')}
+        </table>
+        <section style="margin-top:32px;">
+            <h2>Training Speed</h2>
+            <div class="training-speed-row">
+                <label for="trainingSpeed">Training speed (%): </label>
+                <input type="number" id="trainingSpeed" min="0" max="1000" step="1" style="width:80px;">
+            </div>
+            <div class="training-speed-row" style="margin-top:16px;">
+        <input type="checkbox" id="mercantilism" style="width:24px;height:24px;">
+        <label for="mercantilism">Mercantilism</label>
+    </div>
+    <div class="training-speed-row">
+        <input type="checkbox" id="vicePresident" style="width:24px;height:24px;">
+        <label for="vicePresident">Vice president appointment</label>
+    </div>
+    <div class="training-speed-row">
+        <input type="checkbox" id="petSkill" style="width:24px;height:24px;" onchange="togglePetSkill()">
+        <label for="petSkill">Pet skill</label>
+        <select id="petSkillLevel" style="width:60px; display:none; margin-left:8px;">
+            <option value="1">Lv.1</option>
+            <option value="2">Lv.2</option>
+            <option value="3">Lv.3</option>
+            <option value="4">Lv.4</option>
+            <option value="5">Lv.5</option>
+        </select>
+    </div>
+        </section>
+        <div style="display: flex; justify-content: center; margin-top: 32px;">
+            <button id="calculateBtn" style="
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 24px;
+                padding: 12px 32px;
+                font-size: 1.2em;
+                cursor: pointer;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            ">
+                Calculate
+            </button>
+        </div>
+    `;
+}
+
+function setCurrentLevel(idx, value) {
+    buildingLevels[idx].current = value;
+    // If target is less than current, set target to current
+    if (levelToIndex(buildingLevels[idx].target) < levelToIndex(value)) {
+        buildingLevels[idx].target = value;
+    }
+    renderSummary();
+}
+
+function setTargetLevel(idx, value) {
+    buildingLevels[idx].target = value;
+    renderSummary();
+}
+
+renderBuildings();
+</script>
+<script>
+function togglePetSkill() {
+    const petSkillChecked = document.getElementById('petSkill').checked;
+    document.getElementById('petSkillLevel').style.display = petSkillChecked ? 'inline-block' : 'none';
+}
+</script>
+</body>
+</html>
