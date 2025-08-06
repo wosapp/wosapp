@@ -221,3 +221,7 @@ footer {
   font-size: 18px;
   user-select: none;
 }
+
+.updates-list {
+  text-align: left;
+}
