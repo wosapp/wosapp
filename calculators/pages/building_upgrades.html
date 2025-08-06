@@ -63,16 +63,8 @@ function renderBuildings() {
             const name = buildings[idx];
             const isActive = buildingStates[idx];
             const box = document.createElement('div');
-            box.className = 'tool-box';
-            box.style.flex = '1 1 180px';
-            box.style.display = 'flex';
-            box.style.alignItems = 'center';
-            box.style.justifyContent = 'flex-start';
-            box.style.borderRadius = '18px';
-            box.style.padding = '18px 18px';
-            box.style.minWidth = '180px';
-            box.style.background = '#fff';
-            box.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
+            box.className = 'building-box';
+
             box.style.cursor = name !== "War academy" ? 'pointer' : 'default';
 
             if (name === "War academy") {
@@ -160,22 +152,12 @@ function renderSummary() {
     }
     summary.innerHTML = `
     <h2 style="margin-bottom:18px;">Selected Buildings</h2>
-    <div class="tool-box" style="
-        border-radius: 18px;
-        padding: 20px 24px;
-        background: #fff;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        max-width: 900px; /* Increased width */
-        margin: 0 auto 24px auto;
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-    ">
+    <div class="tool-box summary-box">
         ${activeBuildings.length === 0 ? `<div style="color:#888;">No buildings selected.</div>` : `
             <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 0 18px; align-items: center; width: 100%;">
                 <div style="font-weight: 600; font-size: 1em; padding-bottom: 8px;">Building</div>
-                <div style="font-weight: 600; font-size: 1em; padding-bottom: 8px;">Current</div>
-                <div style="font-weight: 600; font-size: 1em; padding-bottom: 8px;">Target</div>
+                <div style="font-weight: 600; font-size: 1em; padding-bottom: 8px;">From</div>
+                <div style="font-weight: 600; font-size: 1em; padding-bottom: 8px;">To</div>
                 ${activeBuildings.map(b => {
                     const cur = buildingLevels[b.idx].current;
                     const tar = buildingLevels[b.idx].target;
@@ -197,20 +179,24 @@ function renderSummary() {
         `}
     </div>
     <section style="margin-top:32px;">
-        <h2>Training Speed</h2>
-        <div class="training-speed-row">
-            <label for="trainingSpeed">Training speed (%): </label>
+        <h2>Building Speed</h2>
+        <div class="building-speed-row">
+            <label for="trainingSpeed">Building speed (%): </label>
             <input type="number" id="trainingSpeed" min="0" max="1000" step="1" style="width:80px;">
         </div>
-        <div class="training-speed-row" style="margin-top:16px;">
+        <div class="building-speed-row" style="margin-top:16px;">
             <input type="checkbox" id="mercantilism" style="width:24px;height:24px;">
-            <label for="mercantilism">Mercantilism</label>
+            <label for="mercantilism">Mercantilism (+10%)</label>
         </div>
-        <div class="training-speed-row">
+        <div class="building-speed-row">
+            <input type="checkbox" id="doubletime" style="width:24px;height:24px;">
+            <label for="doubletime">Double time (+20%)</label>
+        </div>
+        <div class="building-speed-row">
             <input type="checkbox" id="vicePresident" style="width:24px;height:24px;">
-            <label for="vicePresident">Vice president appointment</label>
+            <label for="vicePresident">Vice president appointment (+10%)</label>
         </div>
-        <div class="training-speed-row">
+        <div class="building-speed-row">
             <input type="checkbox" id="petSkill" style="width:24px;height:24px;" onchange="togglePetSkill()">
             <label for="petSkill">Pet skill</label>
             <select id="petSkillLevel" style="width:60px; display:none; margin-left:8px;">
@@ -221,11 +207,10 @@ function renderSummary() {
                 <option value="5">Lv.5</option>
             </select>
         </div>
-        <!-- Zinman skill level selector -->
-        <div class="training-speed-row" style="margin-top:16px;">
-            <input type="checkbox" id="zinmanSkillActive" style="width:24px;height:24px;" onchange="toggleZinmanSkill()">
-            <label for="zinmanSkill" style="font-weight:500;">Zinman skill</label>
-            <select id="zinmanSkill" style="width:80px; display:none; margin-left:8px;">
+        <div class="building-speed-row">
+            <input type="checkbox" id="zinmanSkill" style="width:24px;height:24px;" onchange="toggleZinmanSkill()">
+            <label for="zinmanSkill">Zinman skill</label>
+            <select id="zinmanSkillLevel" style="width:60px; display:none; margin-left:8px;">
                 <option value="1">Lv.1</option>
                 <option value="2">Lv.2</option>
                 <option value="3">Lv.3</option>
@@ -257,8 +242,8 @@ function togglePetSkill() {
 }
 
 function toggleZinmanSkill() {
-    const zinmanChecked = document.getElementById('zinmanSkillActive').checked;
-    document.getElementById('zinmanSkill').style.display = zinmanChecked ? 'inline-block' : 'none';
+    const zinmanChecked = document.getElementById('zinmanSkill').checked;
+    document.getElementById('zinmanSkillLevel').style.display = zinmanChecked ? 'inline-block' : 'none';
 }
 
 function setCurrentLevel(idx, value) {
@@ -298,6 +283,7 @@ renderSummary();
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <script>
 function calculateUpgrades() {
+
     let totalMeat = 0, totalWood = 0, totalCoal = 0, totalIron = 0, totalFirecrystals = 0, totalTime = 0;
     let filesToLoad = 0, filesLoaded = 0;
 
@@ -331,6 +317,7 @@ function calculateUpgrades() {
                     // --- BUILDING SPEED BONUS ---
                     let speedBonus = Number(document.getElementById('trainingSpeed').value) || 0;
                     if (document.getElementById('mercantilism').checked) speedBonus += 10;
+                    if (document.getElementById('doubletime').checked) speedBonus += 20;
                     if (document.getElementById('vicePresident').checked) speedBonus += 10;
                     if (document.getElementById('petSkill').checked) {
                         const petLevel = Number(document.getElementById('petSkillLevel').value);
@@ -342,8 +329,8 @@ function calculateUpgrades() {
                     }
                     // --- ZINMAN SKILL COST REDUCTION ---
                     let zinmanReduction = 0;
-                    if (document.getElementById('zinmanSkillActive').checked) {
-                        const zinmanLevel = Number(document.getElementById('zinmanSkill').value);
+                    if (document.getElementById('zinmanSkill').checked) {
+                        const zinmanLevel = Number(document.getElementById('zinmanSkillLevel').value);
                         if (zinmanLevel === 1) zinmanReduction = 0.03;
                         else if (zinmanLevel === 2) zinmanReduction = 0.06;
                         else if (zinmanLevel === 3) zinmanReduction = 0.09;
@@ -401,8 +388,8 @@ function showUpgradeResults(meat, wood, coal, iron, firecrystals, time, speedBon
         calcBtnContainer.parentNode.insertBefore(resultDiv, calcBtnContainer.nextSibling);
     }
     resultDiv.innerHTML = `
-        <div style="margin-top:24px; padding:16px; border-radius:12px; background:#f6fff6; box-shadow:0 2px 8px rgba(0,0,0,0.04); max-width:400px; margin-left:auto; margin-right:auto;">
-            <h3 style="color:#388e3c;">Upgrade Results</h3>
+        <div style="margin-top:24px; padding:16px; border-radius:12px; background:#374151; box-shadow:0 2px 8px rgba(0,0,0,0.04); max-width:400px; margin-left:auto; margin-right:auto;">
+            <h3 style="color:#f9fafb;">Upgrade Results</h3>
             <ul style="list-style:none; padding:0; margin:0;">
                 <li style="margin-bottom:8px;"><strong>Meat:</strong> ${formatNumberWithCommas(meat)}</li>
                 <li style="margin-bottom:8px;"><strong>Wood:</strong> ${formatNumberWithCommas(wood)}</li>

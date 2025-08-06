@@ -1,130 +1,223 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f0f4f8;
+  font-family: 'Roboto', sans-serif;
+  background-color: #111827;
   margin: 0;
   padding: 0;
+  color: #f3f4f6;
 }
+
+
 header {
-  background-color: #2c3e50;
-  color: white;
-  padding: 20px;
+  background: linear-gradient(135deg, #1f1f2e, #292942);
+  color: #f9fafb;
+  padding: 30px 20px;
   text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  border-bottom: 2px solid #00d9ff;
 }
+
 h1 {
   margin: 0;
-  font-size: 2em;
+  font-size: 2.5em;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-shadow: 0 0 5px #00d9ff;
 }
+
 p.tagline {
-  margin-top: 8px;
-  font-size: 1.1em;
-  color: #ecf0f1;
-}
-main {
-  padding: 20px;
-  max-width: 800px;
-  margin: auto;
-}
-.tool-card {
-  background-color: white;
-  padding: 15px 20px;
-  margin-bottom: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-.tool-card h2 {
-  margin-top: 0;
-}
-.coming-soon {
-  color: gray;
-  font-style: italic;
-}
-footer {
-  text-align: center;
-  padding: 10px;
-  font-size: 0.9em;
-  color: #777;
-}
-a {
-  text-decoration: none;
-  color: #2c3e50;
-}
-a:hover {
-  text-decoration: underline;
-}
-
-.footer-credits {
-  font-size: 0.8em;
-  color: #555;
-  margin-top: 5px;
-}
-
-.disclaimer {
-  font-size: 0.8em;
-  color: #555;
   margin-top: 10px;
+  font-size: 1.1em;
+  color: #00d9ff;
+}
+
+main {
+  padding: 30px 20px;
+  max-width: 1000px;
+  margin: auto;
 }
 
 .tools-container {
   display: flex;
-  justify-content: center;   /* Center horizontally */
-  gap: 20px;                 /* Space between boxes */
-  margin: 30px 0;
-  flex-wrap: wrap;           /* Make responsive on smaller screens */
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin: 40px 0;
 }
 
 .tool-box {
-  background-color: white;
+  background-color: #1f2937;
   border-radius: 15px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  padding: 20px;
-  width: 300px;              /* Fixed width, adjust as needed */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+  padding: 25px;
+  width: 320px;
   text-align: center;
-  transition: transform 0.2s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #374151;
+
+  display: flex;
+  flex-direction: column;       /* stack children vertically */
+  align-items: center;          /* center children horizontally */
+  justify-content: flex-start;  /* start from top vertically */
+
+  cursor: pointer;
+  user-select: none;
 }
 
 .tool-box:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
+  box-shadow: 0 10px 30px rgba(0, 217, 255, 0.3);
 }
 
 .tool-box h2 {
   margin-top: 0;
+  font-size: 1.4em;
+  color: #00d9ff;
+}
+
+.tool-box p {
+  color: #d1d5db;
+  font-size: 1em;
+  margin: 10px 0 20px;
 }
 
 .tool-box a {
   display: inline-block;
-  margin-top: 15px;
+  margin-top: 10px;
+  padding: 10px 16px;
+  background-color: #00d9ff;
+  color: #0f172a;
+  border-radius: 6px;
   text-decoration: none;
-  color: #2c3e50;
-  font-weight: bold;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
 }
 
 .tool-box a:hover {
-  text-decoration: underline;
+  background-color: #14e3ff;
+  color: #000;
 }
 
 .full-width-box {
-  background-color: white;
+  background-color: #1f2937;
   border-radius: 15px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  padding: 25px;
-  margin: 30px auto;
-  max-width: 640px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+  padding: 30px;
+  margin: 40px auto;
+  max-width: 720px;
   text-align: center;
-  transition: transform 0.2s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #374151;
 }
 
 .full-width-box:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
+  box-shadow: 0 10px 30px rgba(0, 217, 255, 0.3);
 }
 
 .full-width-box a {
   display: inline-block;
   margin-top: 15px;
+  padding: 10px 16px;
+  background-color: #00d9ff;
+  color: #0f172a;
+  border-radius: 6px;
   text-decoration: none;
-  color: #2c3e50;
-  font-weight: bold;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
 }
 
 .full-width-box a:hover {
-  text-decoration: underline;
+  background-color: #14e3ff;
+  color: #000;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 0.9em;
+  color: #9ca3af;
+  margin-top: 60px;
+  border-top: 1px solid #374151;
+  background-color: #1a202c;
+}
+
+.footer-credits,
+.disclaimer {
+  font-size: 0.8em;
+  color: #6b7280;
+  margin-top: 5px;
+}
+
+.summary-box {
+  max-width: 900px;
+  margin: 0 auto 24px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 24px; /* override default padding if you want */
+  border-radius: 18px; /* if different from .tool-box */
+  /* background, box-shadow etc. already in .tool-box */
+}
+
+.building-box {
+  background-color: #1f2937;
+  border-radius: 15px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+  padding: 18px 24px;
+  width: 320px;
+  display: flex;
+  align-items: center;   /* vertically center checkbox and text */
+  gap: 16px;             /* spacing between checkbox and label */
+  border: 1px solid #374151;
+  cursor: pointer;
+  user-select: none;
+  box-sizing: border-box;
+}
+.building-box input[type="checkbox"] {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.building-box input[type="checkbox"]:checked {
+  accent-color: #14e3ff; /* brighter blue when checked */
+}
+
+.building-box label {
+  font-weight: 600;
+  font-size: 1.1em;
+  color: #f3f4f6;
+  cursor: pointer;
+  user-select: none;
+}
+
+.building-speed-row input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  background-color: #f3f4f6;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+.building-speed-row input[type="checkbox"]:checked {
+  background-color: #00d9ff;
+  border-color: #14e3ff;
+}
+
+.building-speed-row input[type="checkbox"]:checked::after {
+  color: #0f172a;
+  font-weight: bold;
+  position: absolute;
+  top: 1px;
+  left: 5px;
+  font-size: 18px;
+  user-select: none;
 }
