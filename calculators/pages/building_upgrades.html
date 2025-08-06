@@ -290,7 +290,7 @@ function calculateUpgrades() {
     buildings.forEach((name, idx) => {
         if (!buildingStates[idx]) return;
         filesToLoad++;
-        const filePath = `https://raw.githubusercontent.com/wosapp/wosapp/data/${name.replace(/ /g, '_')}.csv`;
+        const filePath = `https://raw.githubusercontent.com/wosapp/wosapp/main/data/${name.replace(/ /g, '_')}.csv`;
         const cur = buildingLevels[idx].current;
         const tar = buildingLevels[idx].target;
         const curIdx = levelToIndex(cur);
