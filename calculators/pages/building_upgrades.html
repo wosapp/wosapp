@@ -26,7 +26,7 @@
     you can manually activate them.
     </p>
 
-    <div id="buildings">
+    <div id="buildings" class="tools-container" style="display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; margin-bottom: 32px;">
             <!-- Buildings will be rendered here -->
     </div>
     <div id="summary"></div>
@@ -40,7 +40,8 @@ const buildings = [
     "Infirmary",
     "Infantry camp",
     "Lancer camp",
-    "Marksman camp"
+    "Marksman camp",
+    "War academy"
 ];
 
 // Track active/inactive state and levels for each building
@@ -50,22 +51,53 @@ const buildingLevels = Array(buildings.length).fill(null).map(() => ({ current: 
 function renderBuildings() {
     const container = document.getElementById('buildings');
     container.innerHTML = '';
-    buildings.forEach((name, idx) => {
-        const isActive = buildingStates[idx];
-        const div = document.createElement('div');
-        div.className = 'building';
-        div.innerHTML = `
-            <input type="checkbox" id="activate-${idx}" style="width:24px;height:24px;" ${isActive ? 'checked' : ''} onchange="toggleBuilding(${idx})">
-            <label for="activate-${idx}" style="font-weight:bold; font-size:1.1em;">${name}</label>
-        `;
-        container.appendChild(div);
-    });
-    renderSummary();
+    // 4 rows, 2 columns each
+    for (let row = 0; row < 4; row++) {
+        const rowDiv = document.createElement('div');
+        rowDiv.style.display = 'flex';
+        rowDiv.style.gap = '24px';
+        rowDiv.style.marginBottom = '16px';
+        for (let col = 0; col < 2; col++) {
+            const idx = row * 2 + col;
+            if (idx >= buildings.length) break;
+            const name = buildings[idx];
+            const isActive = buildingStates[idx];
+            const box = document.createElement('div');
+            box.className = 'tool-box';
+            box.style.flex = '1 1 180px';
+            box.style.display = 'flex';
+            box.style.alignItems = 'center';
+            box.style.justifyContent = 'flex-start';
+            box.style.borderRadius = '18px';
+            box.style.padding = '18px 18px';
+            box.style.minWidth = '180px';
+            box.style.background = '#fff';
+            box.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
+            box.style.cursor = name !== "War academy" ? 'pointer' : 'default';
+
+            if (name === "War academy") {
+                box.innerHTML = `<span style="font-weight:bold; font-size:1.1em; color:#888;">War academy<br><span style="font-size:0.9em; color:#d32f2f;">(coming soon)</span></span>`;
+            } else {
+                box.innerHTML = `
+                    <input type="checkbox" id="activate-${idx}" style="width:24px;height:24px;margin-right:12px;" ${isActive ? 'checked' : ''} tabindex="-1">
+                    <label for="activate-${idx}" style="font-weight:bold; font-size:1.1em; cursor:pointer;">${name}</label>
+                `;
+                box.onclick = function(e) {
+                    // Prevent double toggle if clicking directly on checkbox
+                    if (e.target.tagName.toLowerCase() === 'input') return;
+                    toggleBuilding(idx);
+                };
+            }
+            rowDiv.appendChild(box);
+        }
+        container.appendChild(rowDiv);
+    }
 }
 
 function toggleBuilding(idx) {
     buildingStates[idx] = !buildingStates[idx];
     renderBuildings();
+    renderSummary();
 }
 
 function getLevelOptions(selected, minIdx = 0) {
@@ -127,81 +159,129 @@ function renderSummary() {
         return;
     }
     summary.innerHTML = `
-        <h2>Selected Buildings</h2>
-        <table border="1" cellpadding="8" style="border-collapse:collapse;">
-            <tr>
-                <th>Building</th>
-                <th>Current Level</th>
-                <th>Target Level</th>
-            </tr>
-            ${activeBuildings.map(b => {
-                const cur = buildingLevels[b.idx].current;
-                const tar = buildingLevels[b.idx].target;
-                return `
-                <tr>
-                    <td>${b.name}</td>
-                    <td>
-                        <select onchange="setCurrentLevel(${b.idx}, this.value)">
+    <h2 style="margin-bottom:18px;">Selected Buildings</h2>
+    <div class="tool-box" style="
+        border-radius: 18px;
+        padding: 20px 24px;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        max-width: 900px; /* Increased width */
+        margin: 0 auto 24px auto;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    ">
+        ${activeBuildings.length === 0 ? `<div style="color:#888;">No buildings selected.</div>` : `
+            <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 0 18px; align-items: center; width: 100%;">
+                <div style="font-weight: 600; font-size: 1em; padding-bottom: 8px;">Building</div>
+                <div style="font-weight: 600; font-size: 1em; padding-bottom: 8px;">Current</div>
+                <div style="font-weight: 600; font-size: 1em; padding-bottom: 8px;">Target</div>
+                ${activeBuildings.map(b => {
+                    const cur = buildingLevels[b.idx].current;
+                    const tar = buildingLevels[b.idx].target;
+                    return `
+                    <div style="padding:6px 0; font-weight:500; text-align:left; overflow-wrap:anywhere;">${b.name}</div>
+                    <div style="padding:6px 0;">
+                        <select onchange="setCurrentLevel(${b.idx}, this.value)" style="padding: 4px 8px; border-radius: 8px; border: 1px solid #ccc; min-width:80px; max-width:170px; width:100%;">
                             ${getLevelOptions(cur)}
                         </select>
-                    </td>
-                    <td>
-                        <select onchange="setTargetLevel(${b.idx}, this.value)">
+                    </div>
+                    <div style="padding:6px 0;">
+                        <select onchange="setTargetLevel(${b.idx}, this.value)" style="padding: 4px 8px; border-radius: 8px; border: 1px solid #ccc; min-width:80px; max-width:170px; width:100%;">
                             ${getLevelOptions(tar, levelToIndex(cur))}
                         </select>
-                    </td>
-                </tr>
-                `;
-            }).join('')}
-        </table>
-        <section style="margin-top:32px;">
-            <h2>Training Speed</h2>
-            <div class="training-speed-row">
-                <label for="trainingSpeed">Training speed (%): </label>
-                <input type="number" id="trainingSpeed" min="0" max="1000" step="1" style="width:80px;">
+                    </div>
+                    `;
+                }).join('')}
             </div>
-            <div class="training-speed-row" style="margin-top:16px;">
-        <input type="checkbox" id="mercantilism" style="width:24px;height:24px;">
-        <label for="mercantilism">Mercantilism</label>
+        `}
     </div>
-    <div class="training-speed-row">
-        <input type="checkbox" id="vicePresident" style="width:24px;height:24px;">
-        <label for="vicePresident">Vice president appointment</label>
-    </div>
-    <div class="training-speed-row">
-        <input type="checkbox" id="petSkill" style="width:24px;height:24px;" onchange="togglePetSkill()">
-        <label for="petSkill">Pet skill</label>
-        <select id="petSkillLevel" style="width:60px; display:none; margin-left:8px;">
-            <option value="1">Lv.1</option>
-            <option value="2">Lv.2</option>
-            <option value="3">Lv.3</option>
-            <option value="4">Lv.4</option>
-            <option value="5">Lv.5</option>
-        </select>
-    </div>
-        </section>
-        <div style="display: flex; justify-content: center; margin-top: 32px;">
-            <button id="calculateBtn" style="
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                border-radius: 24px;
-                padding: 12px 32px;
-                font-size: 1.2em;
-                cursor: pointer;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            ">
-                Calculate
-            </button>
+    <section style="margin-top:32px;">
+        <h2>Training Speed</h2>
+        <div class="training-speed-row">
+            <label for="trainingSpeed">Training speed (%): </label>
+            <input type="number" id="trainingSpeed" min="0" max="1000" step="1" style="width:80px;">
         </div>
-    `;
+        <div class="training-speed-row" style="margin-top:16px;">
+            <input type="checkbox" id="mercantilism" style="width:24px;height:24px;">
+            <label for="mercantilism">Mercantilism</label>
+        </div>
+        <div class="training-speed-row">
+            <input type="checkbox" id="vicePresident" style="width:24px;height:24px;">
+            <label for="vicePresident">Vice president appointment</label>
+        </div>
+        <div class="training-speed-row">
+            <input type="checkbox" id="petSkill" style="width:24px;height:24px;" onchange="togglePetSkill()">
+            <label for="petSkill">Pet skill</label>
+            <select id="petSkillLevel" style="width:60px; display:none; margin-left:8px;">
+                <option value="1">Lv.1</option>
+                <option value="2">Lv.2</option>
+                <option value="3">Lv.3</option>
+                <option value="4">Lv.4</option>
+                <option value="5">Lv.5</option>
+            </select>
+        </div>
+        <!-- Zinman skill level selector -->
+        <div class="training-speed-row" style="margin-top:16px;">
+            <input type="checkbox" id="zinmanSkillActive" style="width:24px;height:24px;" onchange="toggleZinmanSkill()">
+            <label for="zinmanSkill" style="font-weight:500;">Zinman skill</label>
+            <select id="zinmanSkill" style="width:80px; display:none; margin-left:8px;">
+                <option value="1">Lv.1</option>
+                <option value="2">Lv.2</option>
+                <option value="3">Lv.3</option>
+                <option value="4">Lv.4</option>
+                <option value="5">Lv.5</option>
+            </select>
+        </div>
+    </section>
+    <div style="display: flex; justify-content: center; margin-top: 32px;">
+        <button id="calculateBtn" style="
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 24px;
+            padding: 12px 32px;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        ">
+            Calculate
+        </button>
+    </div>
+`;
+}
+
+function togglePetSkill() {
+    const petSkillChecked = document.getElementById('petSkill').checked;
+    document.getElementById('petSkillLevel').style.display = petSkillChecked ? 'inline-block' : 'none';
+}
+
+function toggleZinmanSkill() {
+    const zinmanChecked = document.getElementById('zinmanSkillActive').checked;
+    document.getElementById('zinmanSkill').style.display = zinmanChecked ? 'inline-block' : 'none';
 }
 
 function setCurrentLevel(idx, value) {
     buildingLevels[idx].current = value;
-    // If target is less than current, set target to current
-    if (levelToIndex(buildingLevels[idx].target) < levelToIndex(value)) {
-        buildingLevels[idx].target = value;
+    const curIdx = levelToIndex(value);
+    let tarIdx = levelToIndex(buildingLevels[idx].target);
+    if (tarIdx <= curIdx) {
+        // Find next available level value
+        let options = [];
+        // Build options array in same order as getLevelOptions
+        for (let i = 1; i <= 30; i++) options.push(i);
+        for (let i = 1; i <= 4; i++) options.push(`30.${i}`);
+        for (let fc = 1; fc <= 5; fc++) {
+            options.push(`FC${fc}`);
+            if (fc < 5) for (let upg = 1; upg <= 4; upg++) options.push(`FC${fc}.${upg}`);
+        }
+        // Find index of current, set target to next if possible
+        const idxInOptions = options.findIndex(opt => levelToIndex(opt) === curIdx);
+        if (idxInOptions >= 0 && idxInOptions < options.length - 1) {
+            buildingLevels[idx].target = options[idxInOptions + 1];
+        } else {
+            buildingLevels[idx].target = options[idxInOptions]; // fallback to current if at max
+        }
     }
     renderSummary();
 }
@@ -211,13 +291,139 @@ function setTargetLevel(idx, value) {
     renderSummary();
 }
 
+// Initial render
 renderBuildings();
+renderSummary();
 </script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <script>
-function togglePetSkill() {
-    const petSkillChecked = document.getElementById('petSkill').checked;
-    document.getElementById('petSkillLevel').style.display = petSkillChecked ? 'inline-block' : 'none';
+function calculateUpgrades() {
+    let totalMeat = 0, totalWood = 0, totalCoal = 0, totalIron = 0, totalFirecrystals = 0, totalTime = 0;
+    let filesToLoad = 0, filesLoaded = 0;
+
+    buildings.forEach((name, idx) => {
+        if (!buildingStates[idx]) return;
+        filesToLoad++;
+        const filePath = `../../data/${name.replace(/ /g, '_')}.csv`;
+        const cur = buildingLevels[idx].current;
+        const tar = buildingLevels[idx].target;
+        const curIdx = levelToIndex(cur);
+        const tarIdx = levelToIndex(tar);
+
+        Papa.parse(filePath, {
+            download: true,
+            header: true,
+            complete: function(results) {
+                const data = results.data;
+                data.forEach(row => {
+                    const lvlIdx = levelToIndex(row.level);
+                    if (lvlIdx > curIdx && lvlIdx <= tarIdx) {
+                        totalMeat += Number(row.meat) || 0;
+                        totalWood += Number(row.wood) || 0;
+                        totalCoal += Number(row.coal) || 0;
+                        totalIron += Number(row.iron) || 0;
+                        totalFirecrystals += Number(row.firecrystals) || 0;
+                        totalTime += Number(row.time) || 0;
+                    }
+                });
+                filesLoaded++;
+                if (filesLoaded === filesToLoad) {
+                    // --- BUILDING SPEED BONUS ---
+                    let speedBonus = Number(document.getElementById('trainingSpeed').value) || 0;
+                    if (document.getElementById('mercantilism').checked) speedBonus += 10;
+                    if (document.getElementById('vicePresident').checked) speedBonus += 10;
+                    if (document.getElementById('petSkill').checked) {
+                        const petLevel = Number(document.getElementById('petSkillLevel').value);
+                        if (petLevel === 1) speedBonus += 5;
+                        else if (petLevel === 2) speedBonus += 7;
+                        else if (petLevel === 3) speedBonus += 9;
+                        else if (petLevel === 4) speedBonus += 12;
+                        else if (petLevel === 5) speedBonus += 15;
+                    }
+                    // --- ZINMAN SKILL COST REDUCTION ---
+                    let zinmanReduction = 0;
+                    if (document.getElementById('zinmanSkillActive').checked) {
+                        const zinmanLevel = Number(document.getElementById('zinmanSkill').value);
+                        if (zinmanLevel === 1) zinmanReduction = 0.03;
+                        else if (zinmanLevel === 2) zinmanReduction = 0.06;
+                        else if (zinmanLevel === 3) zinmanReduction = 0.09;
+                        else if (zinmanLevel === 4) zinmanReduction = 0.12;
+                        else if (zinmanLevel === 5) zinmanReduction = 0.15;
+                    }
+                    // Apply Zinman reduction to costs (not time)
+                    totalMeat = Math.round(totalMeat * (1 - zinmanReduction));
+                    totalWood = Math.round(totalWood * (1 - zinmanReduction));
+                    totalCoal = Math.round(totalCoal * (1 - zinmanReduction));
+                    totalIron = Math.round(totalIron * (1 - zinmanReduction));
+                    totalFirecrystals = Math.round(totalFirecrystals);
+                    // Calculate reduced time
+                    const reduction = 1 / (1 + speedBonus / 100);
+                    const finalTime = Math.round(totalTime * reduction);
+                    showUpgradeResults(totalMeat, totalWood, totalCoal, totalIron, totalFirecrystals, finalTime, speedBonus);
+                }
+            }
+        });
+    });
+
+    if (filesToLoad === 0) {
+        showUpgradeResults(0,0,0,0,0,0,0);
+    }
 }
+
+function formatNumberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function formatSecondsToDHMS(seconds) {
+    seconds = Number(seconds);
+    const d = Math.floor(seconds / (24 * 3600));
+    seconds %= 24 * 3600;
+    const h = Math.floor(seconds / 3600);
+    seconds %= 3600;
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    // Pad minutes and seconds with leading zeros if < 10
+    const mm = m < 10 ? `0${m}` : m;
+    const ss = s < 10 ? `0${s}` : s;
+    let result = "";
+    if (d > 0) result += `${d}d `;
+    if (h > 0 || d > 0) result += `${h}h:`;
+    result += `${mm}m:${ss}s`;
+    return result.trim();
+}
+
+function showUpgradeResults(meat, wood, coal, iron, firecrystals, time, speedBonus) {
+    let resultDiv = document.getElementById('upgradeResults');
+    if (!resultDiv) {
+        resultDiv = document.createElement('div');
+        resultDiv.id = 'upgradeResults';
+        const calcBtnContainer = document.getElementById('calculateBtn').parentNode;
+        calcBtnContainer.parentNode.insertBefore(resultDiv, calcBtnContainer.nextSibling);
+    }
+    resultDiv.innerHTML = `
+        <div style="margin-top:24px; padding:16px; border-radius:12px; background:#f6fff6; box-shadow:0 2px 8px rgba(0,0,0,0.04); max-width:400px; margin-left:auto; margin-right:auto;">
+            <h3 style="color:#388e3c;">Upgrade Results</h3>
+            <ul style="list-style:none; padding:0; margin:0;">
+                <li style="margin-bottom:8px;"><strong>Meat:</strong> ${formatNumberWithCommas(meat)}</li>
+                <li style="margin-bottom:8px;"><strong>Wood:</strong> ${formatNumberWithCommas(wood)}</li>
+                <li style="margin-bottom:8px;"><strong>Coal:</strong> ${formatNumberWithCommas(coal)}</li>
+                <li style="margin-bottom:8px;"><strong>Iron:</strong> ${formatNumberWithCommas(iron)}</li>
+                <li style="margin-bottom:8px;"><strong>Fire Crystals:</strong> ${formatNumberWithCommas(firecrystals)}</li>
+                <li style="margin-bottom:8px;"><strong>Time:</strong> ${formatSecondsToDHMS(time)}</li>
+                <li style="margin-bottom:8px;"><strong>Total Speed Bonus:</strong> ${speedBonus}%</li>
+            </ul>
+        </div>
+    `;
+}
+
+// Attach to button
+document.addEventListener('DOMContentLoaded', function() {
+    document.body.addEventListener('click', function(e) {
+        if (e.target && e.target.id === 'calculateBtn') {
+            calculateUpgrades();
+        }
+    });
+});
 </script>
 </body>
 </html>
