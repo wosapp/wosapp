@@ -226,6 +226,25 @@ footer {
   text-align: left;
 }
 
+.updates-list a {
+  display: block;           /* Make it block so margin auto can center it */
+  width: fit-content;       /* Shrinks width to the text content */
+  margin: 20px auto 0;      /* Top margin + horizontally centered */
+  padding: 10px 16px;       /* Same padding as before */
+  background-color: #00d9ff;
+  color: #0f172a;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+  text-align: center;
+}
+
+.updates-list a:hover {
+  background-color: #14e3ff;
+  color: #000;
+}
+
 /* Expandable guide section (accordion-style) */
 .expand-box {
   background-color: #1f2937;
