@@ -53,22 +53,16 @@
   </section>
 </main>
 
-    <footer>
-        <p class="footer-credits">
-            <strong>Pollo #2612</strong> — Creator of Whiteout Survival Hub
-        </p>
-        <p class="disclaimer">
-            This website, including its original guides, calculators, and code, is the intellectual property of the author.
-        </p>
-        <p class="disclaimer">
-            Whiteout Survival Hub is an independent fan-made project and is not affiliated or associated with Whiteout Survival, Century Games and its developers.
-        </p>
-        <p class="disclaimer">
-            All Whiteout Survival trademarks and content belong to their respective owners.</p>
+<div id="footer-container"></div>
+<script>
+  fetch("utils/footer.html")
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById("footer-container").innerHTML = data;
+    });
+</script>
 
-    </footer>
-    <script src="scripts/main.js"></script>
-
+<script src="scripts/main.js"></script>
 
 </body>
 </html>

@@ -1,7 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bear Trap</title>
+  <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+  <header>
+    <h1>Bear Trap</h1>
+    <p class="tagline">Learn which hero you should use each generation, how to preset your marches and maximize your BT damage</p>
+  </header>
+
 <main>
-  <div class="full-width-box">
-    <h1>🚧 Coming Soon</h1>
-    <p>We're currently working on this page. Check back soon for updates!</p>
-    <a href="/" class="notify-button">Return to Home</a>
-  </div>
+<div id="common-buttons"></div>
+<script>
+  fetch('../../utils/buttons.html')
+    .then(response => response.text())
+    .then(html => {
+      document.getElementById('common-buttons').innerHTML = html;
+    });
+</script>
+
+<details class="expand-box">
+  <summary>📅 Event Basics</summary>
+  <ul>
+    <li><strong>When:</strong> the Bear Trap event can be scheduled by the R4/R5 every two days (47.5h cooldown)</li>
+    <li><strong>Player cooldown:</strong> players can participate every other day (after the second server reset time 00:00 UTC)</li>
+    <li><strong>Duration:</strong> 30 minutes</li>
+    <li><strong>Goal:</strong> deal as much damage as possible to the bear.</li>
+    <li><strong>How:</strong> players can start or join rallies</li>
+    <li><strong>Rewards:</strong> players receive rewards based on their damage, the more damage will give better rewards.</li>
+  </ul>
+</details>
+
+<details class="expand-box">
+  <summary>🎁 Rewards</summary>
+  <p>Bear Trap is the main source of Essence Stones especially for F2P players, and are required to upgrade the Hero Gear.
+    Other rewards include Lucky Hero Gear Chest, Enhancement XP Components, Alliance tokens, and resources.
+  </p>
+  <p>There are two type of rewards:</p>
+  <ul>
+    <li><strong>Damage Rewards:</strong> based on the damage dealt during the Bear Trap event</li>
+    <li><strong>Hunting Achievements:</strong> issued only once when the target damage is reached</li>
+</details>
+
+<details class="expand-box">
+<summary>⚔️ Rally Leaders</summary>
+  <p>Rally leaders should use the best heroes available to them, below an overview of the best heroes based on their skills available each generation.</p>
+  <p>Note: I am aware the graphic available online is slightly different. I don't see the point to repeat the same hero in "Best" and "Alternative", if you are looking at the alternatives it is because you don't have that specific best hero. Therefore, I provided the best alternative from previous generations.</p>
+<div id="rally-tables-container"></div>
+<script>
+  fetch("bt_rally_leader_heroes.html")
+    .then(response => response.text())
+    .then(html => {
+      document.getElementById("rally-tables-container").innerHTML = html;
+    })
+    .catch(error => {
+      console.error("Failed to load rally hero tables:", error);
+    });
+</script>
+</details>
+  
+<details class="expand-box">
+  <summary>⚔️ Rally Joiners</summary>
+  <p>Rally joiners should use heroes that boost either Attack, Lethality or Damage. Please refer to the INSERT LINK HERE guides for the detailed explanation.</p>
+  <p>With a focus on the Bear Trap event, in the table below you can find the joiners tier list based on their contribution to the final damage output.</p>
+
+  <table class="expandable-table">
+    <thead> 
+        <tr> <th>Tier</th> <th>Heroes</th> </tr> 
+    </thead>
+
+    <tbody>
+        <tr> <td>SS</td> <td>Jessie, Jasser, Seo-Yoon, Jeronimo, Reina, Bradley, Sonya, Magnus,
+          Blanchette, Rufus</td> </tr>
+        <tr> <td>S</td> <td>Ligeia</td> </tr>
+        <tr> <td>A</td> <td>Flint, Greg, Lynn, Wayne</td> </tr>
+        <tr> <td>B</td> <td>Philly, Logan, Mia, Gwen, Renee, Gregory</td> </tr>
+        <tr> <td>C</td> <td>Bahiti, Sergey, Patrick, Lumak-Bokan, Ling-Xue  </td> </tr>
+        <tr> <td>Insta kick</td> <td>Eugene, Cloris, Smith, Charlie, Gina, Molly, Natalia, Zinman, Alonso</td> </tr>
+    </tbody>
+    </table>
+</details>
+  
+<details class="expand-box">
+  <summary>💥 Troops and Damage</summary>
+<p>Most of the damage is dealt by Marksmen and Lancers, while Infantry contributes marginally. Preset your marches accordingly, prioritizing Marksmen, followed by Lancers and finally Infantry.</p>
+<p>In orderd to prepare your marches in advance, calculate the maximum deployable troops for your marches:
+  <ul>
+    <li>If your total troops do not exceed the maximum deployable troops you can simply equalize all your marches</li>
+    <li>If your troops exceed the maximum deployable troops: split Marksmen and Lancers among the available marches, then fill the rest with infantry. 
+      Note that if you lead a rally you have an extra march available. For example if you can deploy 6 marches and you are a rally starter, your total marches is 7.</li>
+    <li>If you are a strong rally leader, consider setting your rally with 1 infantry, 20% lancers and 80% marksmen (only if you have at least 25-30% of marksmen in the other marches to join other players rallies)</li>
+  </ul>
+</p>
+</details>
+  
+<details class="expand-box">
+  <summary>🧠 Strategy</summary>
+<p>As an alliance you should try to start rallies with some delay. In this way when your troops return from a rally you can immediately use them to join another rally has been launched 60-90 seconds before</p>
+<p>The strategy is very simple, you want to join as many rallies as possible. Avoid cherry picking rallies for damage</p>
+<p>For example: if from the strongest rally you can join you achieve 20M damage points, you can achieve better results by joinin 2-3 lower rallies that give you 8-10M point rather that locking your troops in a single rally for 5 minutes.</p>
+<p>In addition, you want to join rallies with the full marches you preset. If your march has 100,000 spots, do not join rallies with only 40,000 spots left. By defaults, the game prioritize infantry over lancers over marksmen when joining such rallies. As a result, you end up sending out marches that cannot achieve their maximmum potential damage.</p>
+<p>When you start a rally, you may want to check the heroes sent by your alliance members. Using the Rally Joiners Tier List, kick heroes that do not add damage to your rally (only if the skills of these heroes are used by your rally, you can check this by clicking the yellow flag at the top-right corner of your rally overview.</p>
+</details>
+
 </main>
+</body>
+
+<footer>
+    <p class="footer-credits">
+        <strong>Pollo #2612</strong> — Creator of Whiteout Survival Hub
+    </p>
+    <p class="disclaimer">
+        This website, including its original guides, calculators, and code, is the intellectual property of the author.
+    </p>
+    <p class="disclaimer">
+        Whiteout Survival Hub is an independent fan-made project and is not affiliated or associated with Whiteout Survival, Century Games and its developers.
+    </p>
+    <p class="disclaimer">
+        All Whiteout Survival trademarks and content belong to their respective owners.
+    </p>
+</footer>
+</html>

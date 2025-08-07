@@ -13,17 +13,40 @@
 
     </header>
 <main>
+    <div id="common-buttons"></div>
+    <script>
+      fetch('../../utils/buttons.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('common-buttons').innerHTML = html;
+        });
+    </script>
   <section id="content">
     <div class="tools-container">
       <div class="tool-box">
         <h2>Bear Trap</h2>
-        <p>Learn which hero you should use each generation, how to preset your marches and maximize your BT damage</p>
+        <p></p>
         <a href="pages/bear_trap.html">Go to Bear Trap guide &rarr;</a>
       </div>
       <div class="tool-box">
         <h2>Frostfire Mines</h2>
-        <p>Learn how to micro your marches during Frostfire Mines event and climb the leaderboard</p>
+        <p></p>
         <a href="pages/frostfire_mines.html">Go to Frostfire Mines guide &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="content">
+    <div class="tools-container">
+      <div class="tool-box">
+        <h2>Rallies and Garrisons</h2>
+        <p></p>
+        <a href="pages/rallies_guide.html">Go to Rallies and Garrisons guide &rarr;</a>
+      </div>
+      <div class="tool-box">
+        <h2>Coming soon...</h2>
+        <p></p>
+        <a href="index.html">Coming soon... &rarr;</a>
       </div>
     </div>
   </section>

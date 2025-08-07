@@ -20,9 +20,17 @@
         <p class="tagline">Calculate building upgrade cost and times</p>
     </header>
     <main>
+    <div id="common-buttons"></div>
+    <script>
+      fetch('../../utils/buttons.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('common-buttons').innerHTML = html;
+        });
+    </script>
         <p>
     Select buildings to manage their upgrade levels and input the building speed. 
-    If president, vice president and pet skills have not been activated 
+    If president, vice president, double time and pet skill have not been activated 
     you can manually activate them.
     </p>
 
