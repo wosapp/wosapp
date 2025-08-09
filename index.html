@@ -47,18 +47,41 @@
     </div>
 
 <div class="full-width-box">
-    <h2>Support the Creator</h2>
+    <h2>Support Us</h2>
     <p>
     Whiteout Survival Hub is free to use and built with love by players, for players. 
     If you find it helpful, consider supporting the creator!
     </p>
     <p><a href="https://buymeacoffee.com/wosapp" target="_blank">☕ Buy Me a Coffee</a></p>
-    <p><a href="https://pay.whiteoutsurvival.com/" target="_blank">🎁 Player ID: 398089115</a></p>
 
+    <p><a href="https://pay.whiteoutsurvival.com/" target="_blank">🎁 Player ID: 398089115</a></p>
+    
+    <!-- Copy button -->
+    <button id="copyButton" class="copy-id-button">Copy ID</button>
+    <span id="copyMessage" style="margin-left: 10px; font-size: 0.8rem; color: #14e3ff; display: none;">
+      Copied!
+    </span>
 </div>
 
+<script>
+  const copyButton = document.getElementById('copyButton');
+  const copyMessage = document.getElementById('copyMessage');
+  const playerID = '398089115';
 
-  </section>
+  copyButton.addEventListener('click', () => {
+    navigator.clipboard.writeText(playerID).then(() => {
+      copyMessage.style.display = 'inline';
+      setTimeout(() => {
+        copyMessage.style.display = 'none';
+      }, 1500);
+    }).catch(err => {
+      alert('Failed to copy: ' + err);
+    });
+  });
+</script>
+
+
+</section>
 </main>
 
 <div id="footer-container"></div>
