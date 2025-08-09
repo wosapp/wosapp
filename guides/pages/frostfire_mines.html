@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Frostfire Mines</title>
-  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="/style.css">
   <link rel="icon" href="/WSH_logo.png" type="image/png">
 </head>
 <body>
@@ -16,7 +16,7 @@
 <main>
 <div id="common-buttons"></div>
 <script>
-  fetch('../../utils/buttons.html')
+  fetch('/utils/buttons.html')
     .then(response => response.text())
     .then(html => {
       document.getElementById('common-buttons').innerHTML = html;
