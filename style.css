@@ -116,6 +116,12 @@ main {
   box-shadow: 0 10px 30px rgba(0, 217, 255, 0.3);
 }
 
+.full-width-box h2 {
+  margin-top: 0;
+  font-size: 1.4em;
+  color: #00d9ff;
+}
+
 .full-width-box a {
   display: inline-block;
   margin-top: 15px;

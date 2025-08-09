@@ -12,6 +12,15 @@
         <p class="tagline">Latest changes and improvements to the Whiteout Survival Hub</p>
     </header>
 <main>
+<div id="common-buttons"></div>
+
+<script>
+  fetch('../../utils/buttons.html')
+    .then(response => response.text())
+    .then(html => {
+      document.getElementById('common-buttons').innerHTML = html;
+    });
+</script>
 
 <details class="expand-box">
   <summary>August 2025</summary>
