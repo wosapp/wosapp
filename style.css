@@ -354,3 +354,23 @@ footer {
 .expandable-table tbody tr:last-child td {
   border-bottom: none;
 }
+
+.copy-id-button {
+  margin-top: 15px;
+  padding: 10px 16px;
+  background-color: #00d9ff;
+  color: #0f172a;
+  border-radius: 6px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1em;
+  transition: background-color 0.2s ease;
+  display: inline-block;
+}
+
+.copy-id-button:hover {
+  background-color: #14e3ff;
+  color: #000;
+}
