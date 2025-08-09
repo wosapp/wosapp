@@ -21,34 +21,76 @@
           document.getElementById('common-buttons').innerHTML = html;
         });
     </script>
+
   <section id="content">
     <div class="tools-container">
       <div class="tool-box">
         <h2>Building Upgrades</h2>
-        <p>Calculate building cost and times</p>
         <a href="pages/building_upgrades.html">Go to buildings calculator &rarr;</a>
       </div>
       <div class="tool-box">
-        <h2>Troops training</h2>
-        <p>Calculate troops training cost and times</p>
+        <h2>Troops Training</h2>
         <a href="pages/troops_training.html">Go to troops calculator &rarr;</a>
       </div>
     </div>
   </section>
+
+  <section id="content">
+    <div class="tools-container">
+      <div class="tool-box">
+        <h2>SvS Preparation Phase</h2>
+        <a href="pages/svs_calculator.html">Go to SvS calculator &rarr;</a>
+      </div>
+      <div class="tool-box">
+        <h2>Hall of Chief</h2>
+        <a href="pages/hoc_calculator.html">Go to HoC calculator &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="content">
+    <div class="tools-container">
+      <div class="tool-box">
+        <h2>Chief Gear</h2>
+        <a href="pages/chief_gear_calculator.html">Go to Chief Gear calculator &rarr;</a>
+
+      </div>
+      <div class="tool-box">
+        <h2>Chief Charm</h2>
+        <a href="pages/chief_charm_calculator.html">Go to Chief Charm calculator &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="content">
+    <div class="tools-container">
+      <div class="tool-box">
+        <h2>Hero Gear</h2>
+        <a href="pages/svs_calculator.html">Go to SvS calculator &rarr;</a>
+      </div>
+      <div class="tool-box">
+        <h2>Coming soon...</h2>
+<!--        <a href="pages/... .html">Go to ... calculator &rarr;</a> -->
+        <a href="">Coming soon &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+
+
 </main>
+
+<div id="footer-container"></div>
+<script>
+  fetch("../utils/footer.html")
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById("footer-container").innerHTML = data;
+    });
+</script>
+
+<script src="scripts/main.js"></script>
+
 </body>
-<footer>
-    <p class="footer-credits">
-        <strong>Pollo #2612</strong> — Creator of Whiteout Survival Hub
-    </p>
-    <p class="disclaimer">
-        This website, including its original guides, calculators, and code, is the intellectual property of the author.
-    </p>
-    <p class="disclaimer">
-        Whiteout Survival Hub is an independent fan-made project and is not affiliated or associated with Whiteout Survival, Century Games and its developers.
-    </p>
-    <p class="disclaimer">
-        All Whiteout Survival trademarks and content belong to their respective owners.
-    </p>
-</footer>
 </html>
+

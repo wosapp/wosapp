@@ -1,10 +1,137 @@
-<main>
-  <div class="full-width-box">
-    <h1>🚧 Coming Soon</h1>
-    <p>We're currently working on this page. Check back soon for updates!</p>
-    <a href="/" class="notify-button">Return to Home</a>
-  </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Frostfire Mines</title>
+  <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+  <header>
+    <h1>Frostfire Mines</h1>
+    <p class="tagline">Learn how to micro your marches during Frostfire Mines event and climb the leaderboard with a very simple strategy</p>
+  </header>
 
-        <p>Learn how to micro your marches during Frostfire Mines event and climb the leaderboard</p>
+<main>
+<div id="common-buttons"></div>
+<script>
+  fetch('../../utils/buttons.html')
+    .then(response => response.text())
+    .then(html => {
+      document.getElementById('common-buttons').innerHTML = html;
+    });
+</script>
+
+<details class="expand-box">
+  <summary>Event Details</summary>
+  <ul>
+    <li><strong>When:</strong> the event occurs on Tuesdays every two weeks</li>
+    <li><strong>Participation:</strong> players can sign up during the event day (sign up closes 10 minutes before the fight starts).
+    If you sign up and miss one Frostfire Mines fight you can sign up for another time slot.</li>
+    <li><strong>Time schedule:</strong> 
+      <ul>
+        <li>02:00 UTC</li>
+        <li>05:00 UTC</li>
+        <li>11:00 UTC</li>
+        <li>14:00 UTC</li>
+        <li>16:00 UTC</li>
+        <li>18:00 UTC</li>
+        <li>21:00 UTC</li>
+      </ul>
+    </li>
+    <li><strong>Duration:</strong> 30 minutes</li>
+    <li><strong>Goal:</strong> collect as much Orichalcum as possible from the different sources</li>
+    <li><strong>Rewards:</strong> players receive rewards based on the total points accumulated and their ranking in the leaderboard.
+    Rewards consist in Chief Charm material (up to 80 Charm Design and 80 Charm Guides), as well as gems, speed ups and resources</li>
+  </ul>
+</details>
+
+<details class="expand-box">
+  <summary>How to collect Orichalcum points</summary>
+There are three main ways to collect Orichalcum points during the Frostfire Mines event:
+  <ul>
+    <li><strong>Orichalcum Veins:</strong> these mines are scattered around the map and can be captured by players. Each mine provides a steady stream of Orichalcum points while it is under your control.
+    Level 1, 2 and 3 veins are available and provide 8, 16 and 32 Orichalcum points every second of occupation (up to 8,640, 17,280 and 34,560 respectively).
+    The map is divided in three sections, with the level 3 veins located in the third level around the center of the map.
+  </li>
+    <li><strong>Veins Outburst:</strong> these are temporary locations that spawn during the event. 
+      Players can gather Orichalcum points from these deposits, base gathering rate is 200/s with a maximum of 4,000.</li>
+    <li><strong>Smelter occupation time:</strong> located at the center of the map, the Smelter gives points based on the total occupation time ranking:
+      <ul>
+        <li>1: 100,000 points</li>
+        <li>2: 80,000 points</li>
+        <li>3: 60,000 points</li>
+        <li>4: 55,000 points</li>
+        <li>5: 50,000 points</li>
+        <li>6: 40,000 points</li>
+        <li>7: 35,000 points</li>
+        <li>8: 30,000 points</li>
+        <li>9: 25,000 points</li>
+        <li>10: 20,000 points</li>
+      </ul>
+    </li>
+  </ul>
+</details>
+
+<details class="expand-box">
+<summary>Skill tree</summary>
+  <p>Five skill levels are available, each level has two skills to choose from. An overview is showed in the table below</p>
+<table class="expandable-table">
+    <thead> 
+        <tr> <th>Level</th> <th>Left</th> <th>Right</th> </tr> 
+    </thead>
+
+    <tbody>
+        <tr> <td>1</td> <td>Obtain 1,080 units of extra Orichalcum per minute</td>
+                              <td>Defeat Patrol Obtain 1500 units of Orichalcum</td> </tr>
+        <tr> <td>2</td> <td>Increase troops number that can be dispatched in single march by 12000</td> 
+                              <td>Increase troops march speed on the battlefield by 25%</td> </tr>
+        <tr> <td>3</td> <td>Obtain 5000 units of Orichalcum when occupy a common vein (triggered once per minute)</td>
+                              <td>Obtain 5000 units of Orichalcum when falling to occupy a common vein (triggered once per minute)</td> </tr>
+        <tr> <td>4</td> <td>Increase Orichalcum gather efficiency by 15% when occupying a vein</td> 
+                              <td>Reduce hero recovery time by 30%</td> </tr>
+        <tr> <td>5</td> <td>Troop damage dealt increased by 66 for 60 seconds after use (apply to troops deployed while skill active, cooldown 5 minutes)</td> 
+                              <td>Troops gathering speed increased by 50 for 60 seconds after use (apply to troops deployed while skill active, cooldown 5 minutes)</td> </tr>
+    </tbody>
+    </table>
+  <p>Skill points can be earned by defeating Patrol Guards. Level 1 Patrol Guards give 75 XP points when defeated, while level 2 guards give 150 XP points.</p>
+</details>
+
+<details class="expand-box">
+  <summary>Strategy and gameplay</summary>
+</details>
+  
+<details class="expand-box">
+  <summary></summary>
+<p>Most of the damage is dealt by Marksmen and Lancers, while Infantry contributes marginally. Preset your marches accordingly, prioritizing Marksmen, followed by Lancers and finally Infantry.</p>
+<p>In orderd to prepare your marches in advance, calculate the maximum deployable troops for your marches:
+  <ul>
+    <li>If your total troops do not exceed the maximum deployable troops you can simply equalize all your marches</li>
+    <li>If your troops exceed the maximum deployable troops: split Marksmen and Lancers among the available marches, then fill the rest with infantry. 
+      Note that if you lead a rally you have an extra march available. For example if you can deploy 6 marches and you are a rally starter, your total marches is 7.</li>
+    <li>If you are a strong rally leader, consider setting your rally with 1 infantry, 20% lancers and 80% marksmen (only if you have at least 25-30% of marksmen in the other marches to join other players rallies)</li>
+  </ul>
+</p>
+</details>
+  
+<details class="expand-box">
+  <summary>🧠 Strategy</summary>
+
+</details>
 
 </main>
+
+<div id="footer-container"></div>
+<script>
+  fetch("../../utils/footer.html")
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById("footer-container").innerHTML = data;
+    });
+</script>
+
+<script src="scripts/main.js"></script>
+
+</body>
+</html>
+
