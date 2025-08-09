@@ -115,14 +115,14 @@
 
 <div id="footer-container"></div>
 <script>
-  fetch("../utils/footer.html")
+  fetch("/utils/footer.html")
     .then(response => response.text())
     .then(data => {
       document.getElementById("footer-container").innerHTML = data;
     });
 </script>
 
-<script src="../scripts/main.js"></script>
+<script src="/scripts/main.js"></script>
 
 </body>
 </html>

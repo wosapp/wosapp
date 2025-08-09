@@ -227,10 +227,10 @@ footer {
 }
 
 .updates-list a {
-  display: block;           /* Make it block so margin auto can center it */
-  width: fit-content;       /* Shrinks width to the text content */
-  margin: 20px auto 0;      /* Top margin + horizontally centered */
-  padding: 10px 16px;       /* Same padding as before */
+  display: block;
+  width: fit-content;
+  margin: 20px auto 0;
+  padding: 10px 16px;
   background-color: #00d9ff;
   color: #0f172a;
   border-radius: 6px;
@@ -245,7 +245,6 @@ footer {
   color: #000;
 }
 
-/* Expandable guide section (accordion-style) */
 .expand-box {
   background-color: #1f2937;
   border: 1px solid #374151;
