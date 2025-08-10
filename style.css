@@ -379,3 +379,45 @@ footer {
   background-color: #14e3ff;
   color: #000;
 }
+
+.day-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.tab-button {
+  background-color: #1f2937;
+  color: #00d9ff;
+  border: 1px solid #374151;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.tab-button:hover {
+  background-color: #00d9ff;
+  color: #0f172a;
+}
+
+.tab-button.active {
+  background-color: #00d9ff;
+  color: #0f172a;
+}
+
+.tab-content {
+  display: none;
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+}
+
+.tab-content.active {
+  display: block;
+}
