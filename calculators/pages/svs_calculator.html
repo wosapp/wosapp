@@ -1,21 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guides</title>
-    <link rel="stylesheet" href="/style.css">
-    <link rel="icon" href="/WSH_logo.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Guides</title>
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="icon" href="/WSH_logo.png" />
+<style>
+  /* Basic styling for the summary table */
+  #summary-section {
+    margin-top: 30px;
+  }
+  #summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #1f2937;
+    color: #f3f4f6;
+    margin-top: 12px;
+    border: 1px solid #374151;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    font-family: Arial, sans-serif; /* preserve your font */
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #summary-table thead tr {
+    background-color: #111827;
+  }
+  #summary-table th,
+  #summary-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #374151;
+    text-align: left;
+  }
+  #summary-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+  #summary-table tfoot th {
+    font-weight: bold;
+  }
+  /* Center day total inside each day tab */
+  .upgrade-total {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 1.2em;
+    color: #00d9ff;
+  }
+</style>
+
 </head>
 
 <body>
-    <header>
-        <h1>SvS Calculator</h1>
-        <p class="tagline">Calculate the points ahead of time based on what you have saved</p>
+  <header>
+    <h1>SvS Calculator</h1>
+    <p class="tagline">Calculate the points ahead of time based on what you have saved</p>
+  </header>
 
-    </header>
-<main>
-
+  <main>
     <div id="common-buttons"></div>
     <script>
       fetch('/utils/buttons.html')
@@ -24,15 +67,14 @@
           document.getElementById('common-buttons').innerHTML = html;
         });
     </script>
-<p>
-</p>
-   <div class="day-tabs">
+    <p></p>
+    <p></p>
+    <div class="day-tabs">
       <button class="tab-button active" onclick="openDay(event, 'Day1')">Day 1</button>
       <button class="tab-button" onclick="openDay(event, 'Day2')">Day 2</button>
       <button class="tab-button" onclick="openDay(event, 'Day3')">Day 3</button>
       <button class="tab-button" onclick="openDay(event, 'Day4')">Day 4</button>
       <button class="tab-button" onclick="openDay(event, 'Day5')">Day 5</button>
-      <button class="tab-button" onclick="openDay(event, 'Summary')">Summary</button>
     </div>
 
     <!-- Tab Contents -->
@@ -49,35 +91,186 @@
     </div>
 
     <div id="Day4" class="tab-content">
-      <h2>Day 4 Troops Training and Chief Charm</h2>
+      <h2>Day 4 - Troops Training and Chief Charm</h2>
     </div>
 
     <div id="Day5" class="tab-content">
       <h2>Day 5 - Pets and Gear Upgrades</h2>
     </div>
 
-    <div id="Summary" class="tab-content">
+    <section id="summary-section" class="full-width-box">
       <h2>Summary of All Days</h2>
-    </div>
+      <table id="summary-table" border="1" cellspacing="0" cellpadding="5">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Filled dynamically -->
+        </tbody>
+        <tfoot>
+          <tr>
+            <th>Overall Total</th>
+            <th id="summary-total">0</th>
+          </tr>
+        </tfoot>
+      </table>
+    </section>
+  </main>
+
+  <script>
+    function openDay(evt, dayName) {
+      let i, tabcontent, tabbuttons;
+      tabcontent = document.getElementsByClassName("tab-content");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].classList.remove("active");
+      }
+      tabbuttons = document.getElementsByClassName("tab-button");
+      for (i = 0; i < tabbuttons.length; i++) {
+        tabbuttons[i].classList.remove("active");
+      }
+      document.getElementById(dayName).classList.add("active");
+      evt.currentTarget.classList.add("active");
+    }
+
+    const dayConfig = {
+      Day1: {
+        recommended: ["Use_1_Fire_Crystals", "Use_Fire_1_Crystals_Shards",
+                      "Use_1m_Construction_Speed_Up", "Raise_Chief_Charm_Score_by_1"],
+        facultative: [],
+        "not-recommended": ["Use_1_Fire_Crystals_Shards"]
+      },
+      Day2: {
+        recommended: ["Spin_Lucky_Wheel", "Use_1_Rare_Hero_Shard", "Use_1_Epic_Hero_Shard",
+                      "Use_1_Mythic_Hero_Shard", "Use_1_Fire_Crystals_Shards", "Use_1m_Research_Speed_Ups"],
+        facultative: ["Use_1_Fire_Crystals", "Use_1m_Construction_Speed_Up"],
+        "not-recommended": []
+      },
+      Day3: {
+        recommended: ["Gather_1000_Meat", "Gather_1000_Wood", "Gather_200_Coal", "Gather_50_Iron", "Defeat_Polar_Terror",
+                      "Defeat_Beast_Level_1_to_10", "Defeat_Beast_Level_11_to_15",
+                      "Defeat_Beast_Level_16_to_20", "Defeat_Beast_Level_21_to_25", 
+                      "Defeat_Beast_Level_26_to_30"],
+        facultative: [],
+        "not-recommended": ["Raise_Chief_Charm_Score_by_1", "Pet_Advancement_Score_Increases_by_1",
+                            "Use_Pet_Skill_Advanced_Refinement", "Use_Pet_Skill_Common_Refinement",
+                            "Raise_Chief_Gear_Score_by_1"]
+      },
+      Day4: {
+        recommended: ["Raise_Chief_Charm_Score_by_1", "Train_Level_1_Troop", "Train_Level_2_Troop",
+                      "Train_Level_3_Troop", "Train_Level_4_Troop", "Train_Level_5_Troop", "Train_Level_6_Troop",
+                      "Train_Level_7_Troop", "Train_Level_8_Troop", "Train_Level_9_Troop", "Train_Level_10_Troop",
+                      "Train_Level_11_Troop"],
+        facultative: [],
+        "not-recommended": ["Use_1_Essence_Stone", "Use_1_Exclusive_Hero_Gear_Widget", 
+                            "Use_1_Mithril", "Raise_Chief_Gear_Score_by_1"]
+      },
+      Day5: {
+        recommended: ["Pet_Advancement_Score_Increases_by_1", "Use_Pet_Skill_Advanced_Refinement", 
+                      "Use_Pet_Skill_Common_Refinement", "Use_1_Essence_Stone", "Use_1_Exclusive_Hero_Gear_Widget", 
+                      "Use_1_Mithril", "Raise_Chief_Gear_Score_by_1"],
+        facultative: ["Use_1_Fire_Crystals", "Use_1_Fire_Crystals_Shards", "Use_1_Refined_Fire_Crystals",
+                      "Use_1m_Research_Speed_Up", "Use_1m_Construction_Speed_Up", "Use_1m_Troop_Training_Speed_Up"],
+        "not-recommended": []
+      }
+    };
+
+    function createUpgradeBox(name, points) {
+      const div = document.createElement("div");
+      div.className = "upgrade-box";
+      div.innerHTML = `
+        <span class="upgrade-name">${name.replace(/_/g, " ")}</span>
+        <input type="number" class="material-input" data-points="${points}" placeholder="Qty" min="0" />
+        <span class="points">0</span>
+      `;
+      return div;
+    }
+
+    fetch("/data/Svs_points.csv")
+      .then(res => res.text())
+      .then(text => {
+        const rows = text.trim().split("\n").slice(1);
+        const pointsMap = {};
+        rows.forEach(row => {
+          const [upgrade, points] = row.split(",");
+          pointsMap[upgrade] = parseFloat(points);
+        });
+
+        Object.keys(dayConfig).forEach(dayId => {
+          const dayTab = document.getElementById(dayId);
+          const config = dayConfig[dayId];
+
+          ["recommended", "facultative", "not-recommended"].forEach(category => {
+            if (config[category].length > 0) {
+              const catHeader = document.createElement("div");
+              catHeader.className = "category-header";
+              catHeader.textContent = category.replace("-", " ").replace(/\b\w/g, c => c.toUpperCase()) + ":";
+              dayTab.appendChild(catHeader);
+              config[category].forEach(upgrade => {
+                if (pointsMap[upgrade] !== undefined) {
+                  dayTab.appendChild(createUpgradeBox(upgrade, pointsMap[upgrade]));
+                }
+              });
+            }
+          });
+
+          const totalDiv = document.createElement("div");
+          totalDiv.className = "upgrade-total";
+          totalDiv.innerHTML = `<strong>Total:</strong> <span class="day-total">0</span>`;
+          dayTab.appendChild(totalDiv);
+        });
+
+        updateTotals();
+      });
+
+    function updateTotals() {
+      let overallTotal = 0;
+      const tbody = document.querySelector('#summary-table tbody');
+      tbody.innerHTML = '';
+
+      Object.keys(dayConfig).forEach(dayId => {
+        const dayTab = document.getElementById(dayId);
+        if (!dayTab) return; // safety check
+
+        let dayTotal = 0;
+        dayTab.querySelectorAll('.upgrade-box').forEach(box => {
+          let input = box.querySelector('.material-input');
+          let pointsPerUnit = parseFloat(input.dataset.points) || 0;
+          let materials = parseFloat(input.value) || 0;
+          let points = materials * pointsPerUnit;
+          box.querySelector('.points').textContent = points.toLocaleString('en-US', {maximumFractionDigits: 0});
+          dayTotal += points;
+        });
+
+        overallTotal += dayTotal;
+
+        // Update day total display with thousands separator
+        let dayTotalSpan = dayTab.querySelector('.day-total');
+        if (dayTotalSpan) dayTotalSpan.textContent = dayTotal.toLocaleString('en-US', {maximumFractionDigits: 0});
+
+        // Add to summary table with thousands separator
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${dayId.replace(/Day(\d+)/, 'Day $1')}</td><td>${dayTotal.toLocaleString('en-US', {maximumFractionDigits: 0})}</td>`;
+
+        tbody.appendChild(tr);
+      });
+
+      // Update overall total in summary footer with thousands separator
+      const summaryTotal = document.getElementById('summary-total');
+      if (summaryTotal) summaryTotal.textContent = overallTotal.toLocaleString('en-US', {maximumFractionDigits: 0});
+    }
+
+    document.body.addEventListener('input', e => {
+      if (e.target.classList.contains('material-input')) {
+        updateTotals();
+      }
+    });
+  </script>
 
 </main>
 
-<script>
-function openDay(evt, dayName) {
-  let i, tabcontent, tabbuttons;
-  
-  tabcontent = document.getElementsByClassName("tab-content");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].classList.remove("active");
-  }
-  
-  tabbuttons = document.getElementsByClassName("tab-button");
-  for (i = 0; i < tabbuttons.length; i++) {
-    tabbuttons[i].classList.remove("active");
-  }
-  
-  document.getElementById(dayName).classList.add("active");
-  evt.currentTarget.classList.add("active");
-}
 
-</script>
+</body>
+</html>

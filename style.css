@@ -413,6 +413,7 @@ footer {
   display: none;
   background-color: #1f2937;
   border: 1px solid #374151;
+  color: #00d9ff;
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
@@ -421,3 +422,85 @@ footer {
 .tab-content.active {
   display: block;
 }
+
+.upgrade-box {
+  display: grid;
+  grid-template-columns: 1fr 120px 80px;
+  align-items: center;
+  gap: 12px;
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 16px; /* increased spacing */
+}
+
+.upgrade-name {
+  color: #f3f4f6;
+}
+
+.material-input {
+  width: 100%;
+  padding: 6px;
+  border: 1px solid #374151;
+  border-radius: 6px;
+  background-color: #111827;
+  color: #f3f4f6;
+}
+
+.material-input:focus {
+  outline: none;
+  border-color: #00d9ff;
+}
+
+.points {
+  text-align: right;
+  font-weight: 600;
+  color: #f3f4f6;
+}
+
+.upgrade-total {
+  margin-top: 16px; /* slightly more space above total */
+  font-size: 1.1em;
+  color: #f3f4f6;
+  background-color: #111827;
+  padding: 8px;
+  border-radius: 8px;
+  text-align: right;
+}
+
+/* Category headers */
+.category-header {
+  margin-top: 20px; /* more space before category title */
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #f3f4f6;
+}
+
+/* Space between buttons and content */
+.day-tabs {
+  margin-bottom: 20px;
+}
+
+.day-total-box {
+  background-color: #111827; /* darker or just different from #1f2937 */
+  border: 2px solid #00d9ff; /* brighter border to stand out */
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 217, 255, 0.4);
+  padding: 30px 25px;
+  width: 320px;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 700;
+  font-size: 1.5em;
+  color: #00d9ff;
+  user-select: none;
+  margin: 20px auto; /* center horizontally with some spacing */
+}
+
