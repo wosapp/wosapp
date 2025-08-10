@@ -2,9 +2,9 @@ Upgrade,Points
 Use_1_Fire_Crystals,2000
 Use_1_Fire_Crystals_Shards,1000
 Use_1_Refined_Fire_Crystals,30000
-Use_1m_Construction_Speed_Up,30
-Use_1m_Research_Speed_Ups,30
-Use_1m_Training_Speed_Ups,30
+Use_1m_Speed_Up_for_Construction,30
+Use_1m_Speed_Up_for_Research,30
+Use_1m_Speed_Up_for_Training,30
 Raise_Chief_Charm_Score_by_1,70
 Spin_Lucky_Wheel_1_Time,8000
 Use_1_Rare_Hero_Shard,350
