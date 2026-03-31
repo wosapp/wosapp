@@ -1,86 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Coming Soon - Whiteout Survival Hub</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
-  <style>
-    /* Your existing CSS base */
-    body {
-      font-family: 'Roboto', sans-serif;
-      background-color: #111827;
-      margin: 0;
-      padding: 0;
-      color: #f3f4f6;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
-    }
-
-    .coming-soon-box {
-      background-color: #1f2937;
-      border-radius: 15px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
-      padding: 40px 60px;
-      max-width: 480px;
-      border: 1px solid #374151;
-      user-select: none;
-    }
-
-    .coming-soon-box h1 {
-      font-size: 3em;
-      margin-bottom: 20px;
-      color: #00d9ff;
-      text-shadow: 0 0 10px #00d9ff;
-      letter-spacing: 1.5px;
-    }
-
-    .coming-soon-box p {
-      font-size: 1.3em;
-      color: #d1d5db;
-      margin-bottom: 30px;
-      line-height: 1.5;
-    }
-
-    .coming-soon-box a {
-      display: inline-block;
-      padding: 12px 24px;
-      background-color: #00d9ff;
-      color: #0f172a;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 1.1em;
-      transition: background-color 0.2s ease;
-    }
-
-    .coming-soon-box a:hover {
-      background-color: #14e3ff;
-      color: #000;
-    }
-
-    @media (max-width: 520px) {
-      .coming-soon-box {
-        padding: 30px 20px;
-        width: 90%;
-      }
-      .coming-soon-box h1 {
-        font-size: 2.2em;
-      }
-      .coming-soon-box p {
-        font-size: 1.1em;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Chief Gear Calculator</title>
+    <link rel="stylesheet" href="/style.css">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2112126597648781"
+     crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 </head>
 <body>
-  <div class="coming-soon-box">
-    <h1>Coming Soon</h1>
-    <p>We’re working hard to bring you something awesome.<br>Stay tuned and check back soon!</p>
-    <a href="/">Back to Home</a>
-  </div>
+<header>
+    <h1>Chief Gear Calculator</h1>
+    <p class="tagline">Calculate materials needed for upgrading chief gear</p>
+</header>
+
+<main>
+    <div id="common-buttons"></div>
+    <script>
+      fetch('/utils/buttons.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('common-buttons').innerHTML = html;
+        });
+    </script>
+
+    <!-- Gear boxes -->
+    <div class="tools-container" id="gear-container"></div>
+
+    <!-- Summary Boxes -->
+    <div class="full-width-box" id="materials-summary">
+      <h2>Total Upgrade Materials</h2>
+      <div id="materials-list">Select gear upgrades to see requirements.</div>
+    </div>
+
+    <div class="full-width-box" id="stats-summary">
+      <h2>Total Stat Boost</h2>
+      <div id="stats-list">No stat data available.</div>
+    </div>
+</main>
+
+<footer>
+  <p class="footer-credits">© 2025 Whiteout Survival Hub</p>
+</footer>
+
+<script>
+const gearNames = ["Cap", "Watch", "Coat", "Pants", "Ring", "Weapon"];
+let tierData = {}; // store materials by tier
+
+function loadCSV(callback) {
+  Papa.parse("/data/chief_gear.csv", {
+    download: true,
+    header: true,
+    skipEmptyLines: true, // ignore empty rows
+    complete: function(results) {
+      console.log("CSV loaded:", results.data); // DEBUG
+      results.data.forEach(row => {
+        const tier = parseInt(row.Tier);
+        if (isNaN(tier)) return;
+        tierData[tier] = {
+          Hardened_Alloy: Number(row.Hardened_Alloy) || 0,
+          Polishing_Solution: Number(row.Polishing_Solution) || 0,
+          Design_Plan: Number(row.Design_Plan) || 0,
+          Lunar_Amber: Number(row.Lunar_Amber) || 0
+        };
+      });
+      console.log("Processed tierData:", tierData); // DEBUG
+      callback();
+    }
+  });
+}
+
+function createGearBoxes() {
+  const container = document.getElementById("gear-container");
+  gearNames.forEach(name => {
+    const div = document.createElement("div");
+    div.className = "tool-box";
+    div.innerHTML = `
+      <h2>${name}</h2>
+      <label>From: 
+        <select class="from-level"></select>
+      </label>
+      <label>To: 
+        <select class="to-level"></select>
+      </label>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function populateDropdowns() {
+  const levels = Object.keys(tierData)
+    .map(n => parseInt(n))
+    .sort((a,b)=>a-b);
+  console.log("Levels for dropdowns:", levels); // DEBUG
+
+  document.querySelectorAll(".from-level, .to-level").forEach(sel => {
+    sel.innerHTML = ""; // clear previous options
+    levels.forEach(lv => {
+      const opt = document.createElement("option");
+      opt.value = lv;
+      opt.textContent = lv;
+      sel.appendChild(opt);
+    });
+
+    if (sel.classList.contains("from-level")) sel.value = levels[0];
+    if (sel.classList.contains("to-level")) sel.value = levels[levels.length-1];
+  });
+}
+
+function calculateTotals() {
+  let materials = {
+    Hardened_Alloy: 0,
+    Polishing_Solution: 0,
+    Design_Plan: 0,
+    Lunar_Amber: 0
+  };
+
+  document.querySelectorAll(".from-level").forEach((fromSel, idx) => {
+    const toSel = document.querySelectorAll(".to-level")[idx];
+    const fromLv = parseInt(fromSel.value);
+    const toLv = parseInt(toSel.value);
+
+    if (toLv > fromLv) {
+      for (let lv = fromLv + 1; lv <= toLv; lv++) {
+        const reqs = tierData[lv];
+        if (!reqs) continue;
+        for (const mat in materials) {
+          materials[mat] += reqs[mat] || 0;
+        }
+      }
+    }
+  });
+
+  document.getElementById("materials-list").innerHTML =
+    Object.entries(materials)
+      .map(([k,v]) => `<div>${k}: ${v}</div>`)
+      .join("");
+
+  document.getElementById("stats-list").innerHTML = "No stat data available.";
+}
+
+document.addEventListener("change", e => {
+  if (e.target.matches(".from-level, .to-level")) {
+    calculateTotals();
+  }
+});
+
+(function init() {
+  loadCSV(() => {
+    createGearBoxes();
+    populateDropdowns();
+    calculateTotals();
+  });
+})();
+</script>
+
 </body>
 </html>
